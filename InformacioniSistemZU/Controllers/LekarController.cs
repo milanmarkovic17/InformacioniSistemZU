@@ -4,6 +4,7 @@ using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static InformacioniSistemZU.Enums.Enums;
 
 namespace InformacioniSistemZU.Controllers
 {
@@ -45,19 +46,12 @@ namespace InformacioniSistemZU.Controllers
             return Ok(pacijenti);
         }
 
-        //ispravna ruta bi bila Lekar
-        //na primer Lekar?ime='Nikola'
-        //vidi ovde pokasnjenje primer: https://stackoverflow.com/questions/4024271/rest-api-best-practices-where-to-put-parameters
-        //mozes da napravis i jednu zajednicku metodu gde bi u query parametru stavio sve filtere pretrage
-        //ali prvo odradi ove pojedinacne, mada je zajednicka metoda najbolje resenje
-        //npr: Lekar?ime='Nikola'&specijalnostId=1&jmbg=1234
-        [HttpGet("{ime}")]
-        public IActionResult VratiLekarePoImenu(string ime)
+        
+        [HttpGet("pretraga")]
+        public IActionResult VratiLekarePoImenu([FromQuery] string ime, [FromQuery] Pol pol)
         {
-            var lekari = _lekarservice.VratiLekarePoImenu(ime); //i dalje mislim da bi bolja ruta bila ova koju sam predlozio - api/Lekar?ime='Nikola'.
-                                                                //tvoja trenutna ruta je - api/Lekar/Nikola . Svakako ce raditi i sa njom, ovo su finese
-                                                                //Nisi uspeo da izvedes ili si nasao neko drugo misljenje po netu?
-                                                                //Fali ti i validacija po polu (stoji u zahtevu).
+            var lekari = _lekarservice.VratiLekarePoImenuIPolu(ime, pol); 
+                                                                
             if (lekari == null)
             {
                 return NotFound();

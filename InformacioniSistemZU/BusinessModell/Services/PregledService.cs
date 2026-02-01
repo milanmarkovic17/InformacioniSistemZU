@@ -48,6 +48,34 @@ namespace InformacioniSistemZU.BusinessModell.Services
             return pregledResponse;
         }
 
+        public IEnumerable<PregledDtoResponse> VratiPregledePoDatumu(DateOnly tacanDatum, DateOnly? doDatuma)
+        {
+            /*
+            if(doDatuma >= tacanDatum)
+            {
+                return null;
+            }*/
+
+            var pregledi = _pregledRepository.VratiSvePreglede();
+
+            if(!doDatuma.HasValue)
+            {
+                pregledi = pregledi.Where(p => DateOnly.FromDateTime(p.Datum) == tacanDatum);
+            }
+            else
+            {
+                pregledi = pregledi.Where(p => DateOnly.FromDateTime(p.Datum) >= tacanDatum && DateOnly.FromDateTime(p.Datum) <= doDatuma);
+            }
+
+            if(pregledi == null)
+            {
+                return null;
+            }
+
+            var preglediResponse = _mapper.Map<IEnumerable<PregledDtoResponse>>(pregledi);
+            return preglediResponse;
+        }
+
         public IEnumerable<PregledDtoResponse> VratiPregledePoSpecijalnostId(int specijanlnostid)
         {
             var pregledi = _pregledRepository.VratiSvePreglede().Where(x => x.Lekar.SpecijalnostId == specijanlnostid);

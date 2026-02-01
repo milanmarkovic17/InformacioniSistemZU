@@ -11,5 +11,6 @@ namespace InformacioniSistemZU.BusinessModell.Services
         PregledDtoResponse IzmeniPregled(int id, IzmeniPregledDtoRequest pregledRequest);
         PregledDtoResponse ObrisiPregled(int id);
         IEnumerable<PregledDtoResponse> VratiPregledePoSpecijalnostId(int specijanlnostid);
+        IEnumerable<PregledDtoResponse> VratiPregledePoDatumu(DateOnly tacanDatum, DateOnly? doDatuma);
     }
 }

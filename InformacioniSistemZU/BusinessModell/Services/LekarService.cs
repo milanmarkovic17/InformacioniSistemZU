@@ -4,6 +4,7 @@ using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
 using InformacioniSistemZU.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Data;
 using System.Linq;
@@ -74,12 +75,11 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
             return bmLekar;
         }
 
-        public IEnumerable<LekarDtoResponse> VratiLekarePoImenu(string ime)
+        public IEnumerable<LekarDtoResponse> VratiLekarePoImenuIPolu(string ime, Pol pol)
         {
-            var lekari = _lekarRepository.VratiSveLekare().Where(x => x.Ime.ToLower().Contains(ime.ToLower()));
-            //vise sam tipovao na metodu StartsWith. Razlika je sto bi Contains za unetu vrednost 'arko' vratio rezultat dok StartsWith bi vratio samo za 'Mar..'
-            //Svakako ce i ovo tvoje raditi za 'Mar' ali vraca i rezultate koji nisu u skladu sa zahtevom. No nebitno...
-            //istrazi dobro te metode za manipulaciju sa stringovima, koriste se dosta
+            var lekari = _lekarRepository.VratiSveLekare().Where(x => x.Ime.ToLower().StartsWith(ime.ToLower()) && x.Pol == pol);
+                                                           
+                                                           
             if (lekari == null)
             {
                 return null;

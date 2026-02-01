@@ -1,6 +1,7 @@
 ﻿using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
 using InformacioniSistemZU.Models;
+using static InformacioniSistemZU.Enums.Enums;
 
 namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
 {
@@ -12,6 +13,6 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
         LekarDtoResponse IzmeniLekara(int id, IzmeniLekaraDtoRequest lekarRequest);
         LekarDtoResponse ObrisiLekara(int id);
         IEnumerable<PacijentDtoResponse> VratiPacijentePoIdLekara(int id);
-        IEnumerable<LekarDtoResponse> VratiLekarePoImenu(string ime);
+        IEnumerable<LekarDtoResponse> VratiLekarePoImenuIPolu(string ime, Pol pol);
     }
 }
