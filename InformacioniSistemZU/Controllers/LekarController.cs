@@ -46,7 +46,7 @@ namespace InformacioniSistemZU.Controllers
             return Ok(pacijenti);
         }
 
-        
+        //ja bih i bez pretrage u ruti, ali bitno je ovo FromQuery
         [HttpGet("pretraga")]
         public IActionResult VratiLekarePoImenu([FromQuery] string ime, [FromQuery] Pol pol)
         {

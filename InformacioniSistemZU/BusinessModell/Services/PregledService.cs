@@ -48,8 +48,11 @@ namespace InformacioniSistemZU.BusinessModell.Services
             return pregledResponse;
         }
 
+        /// zanimljiva logika... i lepo si je obradio. Bravo!
+        /// ja bih stavio datumOd i datumDo. Pa za tacan datum bi morali da se poklapaju datumOd i datumDo
         public IEnumerable<PregledDtoResponse> VratiPregledePoDatumu(DateOnly tacanDatum, DateOnly? doDatuma)
         {
+            //mozes ovde validaciju, ovako kako si napisao i jos uslov da doDatuma ima vrednost tj da nije null
             /*
             if(doDatuma >= tacanDatum)
             {
@@ -67,6 +70,7 @@ namespace InformacioniSistemZU.BusinessModell.Services
                 pregledi = pregledi.Where(p => DateOnly.FromDateTime(p.Datum) >= tacanDatum && DateOnly.FromDateTime(p.Datum) <= doDatuma);
             }
 
+            //vracas praznu listu u ovakvim slucajevima gde se trazi pretraga, ne null
             if(pregledi == null)
             {
                 return null;
