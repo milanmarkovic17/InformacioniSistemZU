@@ -50,31 +50,27 @@ namespace InformacioniSistemZU.BusinessModell.Services
 
         /// zanimljiva logika... i lepo si je obradio. Bravo!
         /// ja bih stavio datumOd i datumDo. Pa za tacan datum bi morali da se poklapaju datumOd i datumDo
-        public IEnumerable<PregledDtoResponse> VratiPregledePoDatumu(DateOnly tacanDatum, DateOnly? doDatuma)
+        public IEnumerable<PregledDtoResponse> VratiPregledePoDatumu(DateOnly datumOd, DateOnly? datumDo)
         {
             //mozes ovde validaciju, ovako kako si napisao i jos uslov da doDatuma ima vrednost tj da nije null
-            /*
-            if(doDatuma >= tacanDatum)
+            
+            if(datumDo.HasValue && datumDo <= datumOd)
             {
                 return null;
-            }*/
+            }
 
             var pregledi = _pregledRepository.VratiSvePreglede();
 
-            if(!doDatuma.HasValue)
+            if(!datumDo.HasValue)
             {
-                pregledi = pregledi.Where(p => DateOnly.FromDateTime(p.Datum) == tacanDatum);
+                pregledi = pregledi.Where(p => DateOnly.FromDateTime(p.Datum) == datumOd);
             }
             else
             {
-                pregledi = pregledi.Where(p => DateOnly.FromDateTime(p.Datum) >= tacanDatum && DateOnly.FromDateTime(p.Datum) <= doDatuma);
+                pregledi = pregledi.Where(p => DateOnly.FromDateTime(p.Datum) >= datumOd && DateOnly.FromDateTime(p.Datum) <= datumDo);
             }
 
-            //vracas praznu listu u ovakvim slucajevima gde se trazi pretraga, ne null
-            if(pregledi == null)
-            {
-                return null;
-            }
+            
 
             var preglediResponse = _mapper.Map<IEnumerable<PregledDtoResponse>>(pregledi);
             return preglediResponse;

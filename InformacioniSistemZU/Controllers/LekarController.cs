@@ -48,9 +48,9 @@ namespace InformacioniSistemZU.Controllers
 
         //ja bih i bez pretrage u ruti, ali bitno je ovo FromQuery
         [HttpGet("pretraga")]
-        public IActionResult VratiLekarePoImenu([FromQuery] string ime, [FromQuery] Pol pol)
+        public IActionResult VratiLekarePoImenu([FromQuery] LekarPretragaDtoResponse lekarResponse, [FromQuery] int strana = 1, [FromQuery] int velicinaStrane = 10)
         {
-            var lekari = _lekarservice.VratiLekarePoImenuIPolu(ime, pol); 
+            var lekari = _lekarservice.VratiLekarePoFilteru(lekarResponse, strana, velicinaStrane);
                                                                 
             if (lekari == null)
             {

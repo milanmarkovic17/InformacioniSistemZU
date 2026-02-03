@@ -13,6 +13,6 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
         LekarDtoResponse IzmeniLekara(int id, IzmeniLekaraDtoRequest lekarRequest);
         LekarDtoResponse ObrisiLekara(int id);
         IEnumerable<PacijentDtoResponse> VratiPacijentePoIdLekara(int id);
-        IEnumerable<LekarDtoResponse> VratiLekarePoImenuIPolu(string ime, Pol pol);
+        IEnumerable<LekarPretragaDtoResponse> VratiLekarePoFilteru(LekarPretragaDtoResponse lekarResponse, int strana = 1, int velicinaStrane = 10);
     }
 }

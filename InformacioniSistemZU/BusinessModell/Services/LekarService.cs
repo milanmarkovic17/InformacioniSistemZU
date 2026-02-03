@@ -75,17 +75,35 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
             return bmLekar;
         }
 
-        public IEnumerable<LekarDtoResponse> VratiLekarePoImenuIPolu(string ime, Pol pol)
+        public IEnumerable<LekarPretragaDtoResponse> VratiLekarePoFilteru(LekarPretragaDtoResponse lekarResponse, int strana = 1, int velecinaStrane = 10)
         {
-            var lekari = _lekarRepository.VratiSveLekare().Where(x => x.Ime.ToLower().StartsWith(ime.ToLower()) && x.Pol == pol);
-                                                           
-                                                           
-            if (lekari == null)
+
+
+            var lekari = _lekarRepository.VratiSveLekare().OrderBy(x => x.Id).AsQueryable();
+
+            if(!string.IsNullOrWhiteSpace(lekarResponse.Ime))
+            { 
+                lekari = lekari.Where(x => x.Ime.ToLower().StartsWith(lekarResponse.Ime.ToLower()));
+            }
+                
+            if(lekarResponse.Pol.HasValue)
             {
-                return null;
+                lekari = lekari.Where(x => x.Pol == lekarResponse.Pol);
             }
 
-            var lekariResponse = _mapper.Map<IEnumerable<LekarDtoResponse>>(lekari);
+            if (!string.IsNullOrWhiteSpace(lekarResponse.Jmbg))
+            {
+                lekari = lekari.Where(x => x.Jmbg == lekarResponse.Jmbg);
+            }
+
+            if (lekarResponse.IsActive.HasValue)
+            {
+                lekari = lekari.Where(x => x.IsActive == lekarResponse.IsActive);
+            }
+
+            var paginacija = lekari.Skip((strana - 1) * velecinaStrane).Take(velecinaStrane).ToList();
+
+            var lekariResponse = _mapper.Map<IEnumerable<LekarPretragaDtoResponse>>(paginacija);
             return lekariResponse;
         }
 

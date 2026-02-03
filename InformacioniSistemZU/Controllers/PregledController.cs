@@ -33,7 +33,7 @@ namespace InformacioniSistemZU.Controllers
             return Ok(pregled);
         }
 
-        [HttpGet("po-specijalnosti/{specijalnostid:int}")]
+        [HttpGet("pospecijalnosti/{specijalnostid:int}")]
         public IActionResult VratiPregledPoSpecijalnostId(int specijalnostid)
         {
             var pregledi = _pregledService.VratiPregledePoSpecijalnostId(specijalnostid);
@@ -45,9 +45,9 @@ namespace InformacioniSistemZU.Controllers
         }
 
         [HttpGet("datum")]
-        public IActionResult VratiPregledePoDatumu([FromQuery] DateOnly tacanDatum, [FromQuery] DateOnly? doDatuma)
+        public IActionResult VratiPregledePoDatumu([FromQuery] DateOnly datumOd, [FromQuery] DateOnly? datumDo)
         {
-            var pregledi = _pregledService.VratiPregledePoDatumu(tacanDatum, doDatuma);
+            var pregledi = _pregledService.VratiPregledePoDatumu(datumOd, datumDo);
             if(pregledi == null)
             {
                 return NotFound();

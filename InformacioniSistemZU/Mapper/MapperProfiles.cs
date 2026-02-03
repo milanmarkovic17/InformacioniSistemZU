@@ -19,6 +19,7 @@ namespace InformacioniSistemZU.Mapper
             CreateMap<Pregled, PregledDtoResponse>();
             CreateMap<UnesiPregledDtoRequest, Pregled>();
             CreateMap<IzmeniPregledDtoRequest, Pregled>();
+            CreateMap<Lekar, LekarPretragaDtoResponse>();
         }
     }
 }
