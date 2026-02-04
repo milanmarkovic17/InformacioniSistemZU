@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InformacioniSistemZU.BusinessModell.RepositoriesBM;
+using InformacioniSistemZU.CustomActionFilters;
 using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
 using Microsoft.AspNetCore.Http;
@@ -61,6 +62,7 @@ namespace InformacioniSistemZU.Controllers
 
 
         [HttpPost]
+        [ValidateModel]
         public IActionResult SacuvajLekara(UnesiLekaraDtoRequest unesiLekara)
         {
             var unetiLekar = _lekarservice.UnesiLekara(unesiLekara);
@@ -69,6 +71,7 @@ namespace InformacioniSistemZU.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [ValidateModel]
         public IActionResult IzmeniLekara(int id, IzmeniLekaraDtoRequest izmeniLekara)
         {
             var izmenjeniLekar = _lekarservice.IzmeniLekara(id, izmeniLekara);
