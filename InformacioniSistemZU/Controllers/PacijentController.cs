@@ -1,4 +1,5 @@
 ﻿using InformacioniSistemZU.BusinessModell.Services;
+using InformacioniSistemZU.CustomActionFilters;
 using InformacioniSistemZU.Dtos.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,7 @@ namespace InformacioniSistemZU.Controllers
 
 
         [HttpPost]
+        [ValidateModel]
         public IActionResult SacuvajPacijenta(UnesiPacijentaDtoRequest unesiPacijenta)
         {
             var unetiPacijent = _pacijentService.UnesiPacijenta(unesiPacijenta);
@@ -43,6 +45,7 @@ namespace InformacioniSistemZU.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [ValidateModel]
         public IActionResult IzmeniPacijenta(int id, IzmeniPacijentaDtoRequest izmeniPacijenta)
         {
             var izmenjeniPacijent = _pacijentService.IzmeniPacijenta(id, izmeniPacijenta);

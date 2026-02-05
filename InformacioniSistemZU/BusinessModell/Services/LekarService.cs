@@ -129,13 +129,20 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
 
         private void BrojGodina(DateTime datumRodjenja)
         {
+            var brojGodine = DateTime.Today.Year - datumRodjenja.Year;
+            if (brojGodine >= 70)
+            {
+                throw new ArgumentOutOfRangeException("Ne mozete uneti ili izmeniti lekara ukoliko ima vise od 70 godina.");
+            }
+
+            /*
             var godinaRodjenja = datumRodjenja.Year;
             var danas = DateTime.Now.Year;
             var brojGodina = danas - godinaRodjenja;
             if (brojGodina > 70)
             {
                 throw new ArgumentOutOfRangeException("Ne mozete uneti ili izmeniti lekara ukoliko ima vise od 70 godina.");
-            }
+            }*/
         }
     }
 }
