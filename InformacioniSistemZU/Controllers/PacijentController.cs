@@ -11,10 +11,12 @@ namespace InformacioniSistemZU.Controllers
     public class PacijentController : ControllerBase
     {
         private readonly IPacijentService _pacijentService;
+        private readonly ILogger<PacijentController> _logger;
 
-        public PacijentController(IPacijentService pacijentService)
+        public PacijentController(IPacijentService pacijentService, ILogger<PacijentController> logger)
         {
             _pacijentService = pacijentService;
+            _logger = logger;
         }
 
         [HttpGet]

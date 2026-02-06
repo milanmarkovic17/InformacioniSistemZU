@@ -12,8 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 var logger = new LoggerConfiguration()
-    .WriteTo.File("Logs/InformacioniSistemZU.txt", rollingInterval: RollingInterval.Day)
-    .MinimumLevel.Warning()
+    .WriteTo.File("Logs/InformacioniSistemZU_Log.txt", rollingInterval: RollingInterval.Minute)
+    .MinimumLevel.Information()
     .CreateLogger();
 
 builder.Logging.ClearProviders();

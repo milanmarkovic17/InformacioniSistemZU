@@ -14,12 +14,12 @@ namespace InformacioniSistemZU.Controllers
     public class LekarController : ControllerBase
     {
         private readonly ILekarService _lekarservice;
-        private readonly IMapper _mapper;
+        private readonly ILogger<LekarController> _logger;
 
-        public LekarController(ILekarService lekarService, IMapper mapper)
+        public LekarController(ILekarService lekarService, ILogger<LekarController> logger)
         {
             _lekarservice = lekarService;
-            _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]

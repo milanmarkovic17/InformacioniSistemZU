@@ -10,10 +10,12 @@ namespace InformacioniSistemZU.Controllers
     public class PregledController : ControllerBase
     {
         private readonly IPregledService _pregledService;
+        private readonly ILogger<PregledController> _logger;
 
-        public PregledController(IPregledService pregledService)
+        public PregledController(IPregledService pregledService, ILogger<PregledController> logger)
         {
             _pregledService = pregledService;
+            _logger = logger;
         }
 
         [HttpGet]
