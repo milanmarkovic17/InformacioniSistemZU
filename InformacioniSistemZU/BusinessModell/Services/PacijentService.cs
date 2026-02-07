@@ -3,8 +3,10 @@ using InformacioniSistemZU.DataModel.Repositories;
 using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
 using InformacioniSistemZU.Models;
+using InformacioniSistemZU.ResultPatern;
 using Microsoft.Identity.Client;
 using System.Data;
+using System.Xml.Linq;
 
 namespace InformacioniSistemZU.BusinessModell.Services
 {
@@ -21,7 +23,6 @@ namespace InformacioniSistemZU.BusinessModell.Services
             _lekarRepository = lekarRepository;
         }
 
-       
         public PacijentDtoResponse IzmeniPacijenta(int id, IzmeniPacijentaDtoRequest pacijentRequest)
         {
             ValidacijaPodataka(pacijentRequest.Jmbg, pacijentRequest.DatumKreiranja, pacijentRequest.IsActive);
@@ -65,7 +66,7 @@ namespace InformacioniSistemZU.BusinessModell.Services
         public PacijentDtoResponse UnesiPacijenta(UnesiPacijentaDtoRequest pacijentRequest)
         {
             ValidacijaPodataka(pacijentRequest.Jmbg, pacijentRequest.DatumKreiranja, pacijentRequest.IsActive);
-
+           
             var dataPacijent = _mapper.Map<Pacijent>(pacijentRequest);
 
             var lekar = _lekarRepository.VratiLekaraPoId(pacijentRequest.LekarId); 
@@ -86,22 +87,24 @@ namespace InformacioniSistemZU.BusinessModell.Services
             return response;
         }
 
-        private void ValidacijaPodataka(string jmbg, DateTime datumKreiranja, bool isActive)
+        private Result ValidacijaPodataka(string jmbg, DateTime datumKreiranja, bool isActive = true)
         {
             if (string.IsNullOrEmpty(jmbg) || jmbg.Length != 13)
             {
-                throw new ArgumentException("JMBG mora imati tacno 13 karaktera");
+
+                return Result.Failure("Maticni broj mora imati tacno 13 karaktera");
             }
 
             if (datumKreiranja.Date > DateTime.Now)
             {
-                throw new ArgumentException("Datum unosa ne sme biti u buducnosti");
+                return Result.Failure("Datum unosa ne sme biti u buducnosti");
             }
 
             if (!isActive)
             {
-                throw new ArgumentException("Novi ili izmenjeni pacijent mora biti aktivan");
+                return Result.Failure("Novi ili izmenjeni pacijent mora biti aktivan");
             }
+            return Result.Success();
         }
 
         public PacijentDtoResponse VratiPacijentaPoId(int id)
