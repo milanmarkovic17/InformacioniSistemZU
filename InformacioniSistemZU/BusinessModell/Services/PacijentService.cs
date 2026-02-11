@@ -15,29 +15,39 @@ namespace InformacioniSistemZU.BusinessModell.Services
         private readonly IPacijentRepository _pacijentRepository;
         private readonly IMapper _mapper;
         private readonly ILekarRepository _lekarRepository;
+        private readonly ILogger<PacijentService> _logger;
 
-        public PacijentService(IPacijentRepository pacijentRepository, IMapper mapper, ILekarRepository lekarRepository)
+        public PacijentService(IPacijentRepository pacijentRepository, IMapper mapper, ILekarRepository lekarRepository, ILogger<PacijentService> logger)
         {
             _pacijentRepository = pacijentRepository;
             _mapper = mapper;
             _lekarRepository = lekarRepository;
+            _logger = logger;
         }
 
-        public PacijentDtoResponse IzmeniPacijenta(int id, IzmeniPacijentaDtoRequest pacijentRequest)
+        public Result<PacijentDtoResponse> IzmeniPacijenta(int id, IzmeniPacijentaDtoRequest pacijentRequest)
         {
-            ValidacijaPodataka(pacijentRequest.Jmbg, pacijentRequest.DatumKreiranja, pacijentRequest.IsActive);
+            _logger.LogInformation($"Izmena pacijenta sa Id-jem {id}.");
+
+            var proveraPodataka = ValidacijaPodataka(pacijentRequest.Jmbg, pacijentRequest.DatumKreiranja, pacijentRequest.IsActive);
+
+            _logger.LogError("Greska prilikom validacije podataka");
+            if (proveraPodataka.IsFailure)
+            {
+                return Result<PacijentDtoResponse>.Failure(proveraPodataka.Errors);
+            }
             
             var dataPacijent = _mapper.Map<Pacijent>(pacijentRequest);
 
             var lekar = _lekarRepository.VratiLekaraPoId(pacijentRequest.LekarId);
             if (lekar == null)
             {
-                return null;
+                return Result<PacijentDtoResponse>.FailureMessage("Izabrani lekar ne postoji u sistemu");
             }
 
             if(lekar.Pacijenti.Count() > 4)
             {
-                return null;
+                return Result<PacijentDtoResponse>.FailureMessage("Izabrani lekar je dostigao maksimalan broj pacijenata");
             }
 
             lekar.Pacijenti.Add(dataPacijent);
@@ -46,10 +56,11 @@ namespace InformacioniSistemZU.BusinessModell.Services
             var izmenjeniPacijent = _pacijentRepository.IzmeniPacijenta(id, dataPacijent);
             if (izmenjeniPacijent == null)
             {
-                return null;
+                return Result<PacijentDtoResponse>.FailureMessage("Pacijent sa izabranim Id-jem ne postoji u sistemu");
             }
             var response = _mapper.Map<PacijentDtoResponse>(izmenjeniPacijent);
-            return response;
+            _logger.LogInformation($"Uspesna izmena za pacijenta sa Id-jem {id}");
+            return Result<PacijentDtoResponse>.Success(response);
         }
 
         public PacijentDtoResponse ObrisiPacijenta(int id)
@@ -63,47 +74,60 @@ namespace InformacioniSistemZU.BusinessModell.Services
             return obrisaniPacijent;
         }
 
-        public PacijentDtoResponse UnesiPacijenta(UnesiPacijentaDtoRequest pacijentRequest)
+        public Result<PacijentDtoResponse> UnesiPacijenta(UnesiPacijentaDtoRequest pacijentRequest)
         {
-            ValidacijaPodataka(pacijentRequest.Jmbg, pacijentRequest.DatumKreiranja, pacijentRequest.IsActive);
+
+            var proveraPodataka = ValidacijaPodataka(pacijentRequest.Jmbg, pacijentRequest.DatumKreiranja, pacijentRequest.IsActive);
+
+            if (proveraPodataka.IsFailure)
+            {
+                return Result<PacijentDtoResponse>.Failure(proveraPodataka.Errors);
+            }
            
             var dataPacijent = _mapper.Map<Pacijent>(pacijentRequest);
 
             var lekar = _lekarRepository.VratiLekaraPoId(pacijentRequest.LekarId); 
             if (lekar == null)
             {
-                return null;
+                return Result<PacijentDtoResponse>.FailureMessage("Izabrani lekar ne postoji u sistemu");
             }
 
             if (lekar.Pacijenti.Count > 4)
             {
-                return null;
+                return Result<PacijentDtoResponse>.FailureMessage("Izabrani lekar je dostigao maksimalan broj pacijenata");
             }
 
             lekar.Pacijenti.Add(dataPacijent);
             
             var kreiraniPacijent = _pacijentRepository.UnesiPacijenta(dataPacijent);
             var response = _mapper.Map<PacijentDtoResponse>(kreiraniPacijent);
-            return response;
+            return Result<PacijentDtoResponse>.Success(response);
         }
 
         private Result ValidacijaPodataka(string jmbg, DateTime datumKreiranja, bool isActive = true)
         {
-            if (string.IsNullOrEmpty(jmbg) || jmbg.Length != 13)
-            {
+            var validacijaPodataka = new List<String>();
+            
+                if (string.IsNullOrEmpty(jmbg) || jmbg.Length != 13)
+                {
+                    validacijaPodataka.Add("Maticni broj mora imati tacno 13 karaktera");
+                }
 
-                return Result.Failure("Maticni broj mora imati tacno 13 karaktera");
+                if (datumKreiranja.Date > DateTime.Now)
+                {
+                    validacijaPodataka.Add("Datum unosa ne sme biti u buducnosti");
+                }
+
+                if (!isActive)
+                {
+                    validacijaPodataka.Add("Novi ili izmenjeni pacijent mora biti aktivan");
+                }
+            
+            if(validacijaPodataka.Any())
+            {
+                return Result.Failure(validacijaPodataka);
             }
 
-            if (datumKreiranja.Date > DateTime.Now)
-            {
-                return Result.Failure("Datum unosa ne sme biti u buducnosti");
-            }
-
-            if (!isActive)
-            {
-                return Result.Failure("Novi ili izmenjeni pacijent mora biti aktivan");
-            }
             return Result.Success();
         }
 

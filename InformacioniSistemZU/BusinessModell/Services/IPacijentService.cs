@@ -1,5 +1,6 @@
 ﻿using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
+using InformacioniSistemZU.ResultPatern;
 
 namespace InformacioniSistemZU.BusinessModell.Services
 {
@@ -7,8 +8,8 @@ namespace InformacioniSistemZU.BusinessModell.Services
     {
         IEnumerable<PacijentDtoResponse> VratiSvePacijente();
         PacijentDtoResponse VratiPacijentaPoId(int id);
-        PacijentDtoResponse UnesiPacijenta(UnesiPacijentaDtoRequest pacijentRequest);
-        PacijentDtoResponse IzmeniPacijenta (int id, IzmeniPacijentaDtoRequest pacijentRequest);
+        Result<PacijentDtoResponse> UnesiPacijenta(UnesiPacijentaDtoRequest pacijentRequest);
+        Result<PacijentDtoResponse> IzmeniPacijenta (int id, IzmeniPacijentaDtoRequest pacijentRequest);
         PacijentDtoResponse ObrisiPacijenta(int id);
     }
 }
