@@ -53,6 +53,8 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
             return lekarResponse;
         }
 
+        //Kod unosa lekara proveriti da li lekar sa tim jmbg-om postoji u registru suspendovanih lekara
+        //registar suspendovanih lekara ce ti biti endpoint na novom API-ju
         public LekarDtoResponse UnesiLekara(UnesiLekaraDtoRequest lekarRequest)
         {
             BrojGodina(lekarRequest.DatumRodjenja);

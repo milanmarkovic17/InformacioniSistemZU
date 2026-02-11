@@ -31,9 +31,9 @@ namespace InformacioniSistemZU.BusinessModell.Services
 
             var proveraPodataka = ValidacijaPodataka(pacijentRequest.Jmbg, pacijentRequest.DatumKreiranja, pacijentRequest.IsActive);
 
-            _logger.LogError("Greska prilikom validacije podataka");
             if (proveraPodataka.IsFailure)
             {
+                _logger.LogError("Greska prilikom validacije podataka");
                 return Result<PacijentDtoResponse>.Failure(proveraPodataka.Errors);
             }
             

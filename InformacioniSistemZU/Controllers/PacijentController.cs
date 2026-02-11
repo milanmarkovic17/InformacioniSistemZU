@@ -1,8 +1,11 @@
-﻿using InformacioniSistemZU.BusinessModell.Services;
+﻿using Azure;
+using InformacioniSistemZU.BusinessModell.Services;
 using InformacioniSistemZU.CustomActionFilters;
 using InformacioniSistemZU.Dtos.Requests;
+using InformacioniSistemZU.Dtos.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace InformacioniSistemZU.Controllers
 {
@@ -50,12 +53,22 @@ namespace InformacioniSistemZU.Controllers
         [ValidateModel]
         public IActionResult IzmeniPacijenta(int id, IzmeniPacijentaDtoRequest izmeniPacijenta)
         {
-            var izmenjeniPacijent = _pacijentService.IzmeniPacijenta(id, izmeniPacijenta);
-            if (izmenjeniPacijent == null)
+            var izmenjeniPacijentResult = _pacijentService.IzmeniPacijenta(id, izmeniPacijenta);
+            //if (izmenjeniPacijent == null)
+            //{
+            //    return NotFound();
+            //}
+            if (izmenjeniPacijentResult.IsSuccess)
             {
-                return NotFound();
+                return Ok(izmenjeniPacijentResult.Value);
             }
-            return Ok(izmenjeniPacijent);
+
+            if (izmenjeniPacijentResult.Errors.Any())
+            {
+                return BadRequest(izmenjeniPacijentResult.Errors);
+            }
+
+            return StatusCode(500);
         }
 
         [HttpDelete("{id:int}")]
