@@ -9,7 +9,7 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
     {
         IEnumerable<LekarDtoResponse> VratiSveLekare();
         LekarDtoResponse VratiLekaraPoId(int id);
-        LekarDtoResponse UnesiLekara(UnesiLekaraDtoRequest lekarRequest);
+        Task<LekarDtoResponse> UnesiLekara(UnesiLekaraDtoRequest lekarRequest);
         LekarDtoResponse IzmeniLekara(int id, IzmeniLekaraDtoRequest lekarRequest);
         LekarDtoResponse ObrisiLekara(int id);
         IEnumerable<PacijentDtoResponse> VratiPacijentePoIdLekara(int id);

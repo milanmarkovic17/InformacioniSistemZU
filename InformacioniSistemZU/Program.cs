@@ -1,6 +1,7 @@
 using InformacioniSistemZU.BusinessModell.RepositoriesBM;
 using InformacioniSistemZU.BusinessModell.Services;
 using InformacioniSistemZU.DataModel.Repositories;
+using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.MainDbContext;
 using InformacioniSistemZU.Mapper;
 using InformacioniSistemZU.Middlewares;
@@ -31,6 +32,11 @@ builder.Services.AddScoped<IPregledRepository, PregledRepository>();
 builder.Services.AddScoped<IPregledService, PregledService>();
 
 builder.Services.AddAutoMapper(ops => ops.AddProfile<MapperProfiles>());
+
+builder.Services.AddHttpClient<IDaLiJeLekarAktivanDtoRequest, DaLiJeLekarAktivanDtoRequest>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7236");
+});
 
 
 builder.Services.AddControllers();

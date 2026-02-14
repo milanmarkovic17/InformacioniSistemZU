@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Data;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using static InformacioniSistemZU.Enums.Enums;
 
 namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
@@ -18,14 +20,16 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
         private readonly IMapper _mapper;
         private readonly ISpecijalnostRepository _specijalnostRepository;
         private readonly IPregledRepository _pregledRepository;
+        private readonly IDaLiJeLekarAktivanDtoRequest _daLiJeLekarAktivan;
 
         public LekarService(ILekarRepository lekarRepository, IMapper mapper, ISpecijalnostRepository specijalnostRepository,
-                            IPregledRepository pregledRepository)
+                            IPregledRepository pregledRepository, IDaLiJeLekarAktivanDtoRequest daLiJeLekarAktivan)
         {
             _lekarRepository = lekarRepository;
             _mapper = mapper;
             _specijalnostRepository = specijalnostRepository;
             _pregledRepository = pregledRepository;
+            _daLiJeLekarAktivan = daLiJeLekarAktivan;
         }
 
         public LekarDtoResponse IzmeniLekara(int id, IzmeniLekaraDtoRequest lekarRequest)
@@ -55,9 +59,17 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
 
         //Kod unosa lekara proveriti da li lekar sa tim jmbg-om postoji u registru suspendovanih lekara
         //registar suspendovanih lekara ce ti biti endpoint na novom API-ju
-        public LekarDtoResponse UnesiLekara(UnesiLekaraDtoRequest lekarRequest)
+        public async Task<LekarDtoResponse> UnesiLekara(UnesiLekaraDtoRequest lekarRequest)
         {
             BrojGodina(lekarRequest.DatumRodjenja);
+
+            bool isActive = await _daLiJeLekarAktivan.DaLiJeAktivan(lekarRequest.Jmbg, lekarRequest.IsActive == true);
+
+            if (!isActive)
+            {
+                return null;
+            }
+
 
             var dataLekar = _mapper.Map<Lekar>(lekarRequest);
             var specijalnostId = _specijalnostRepository.VratiPoId(lekarRequest.SpecijalnostId); 
