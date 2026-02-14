@@ -35,7 +35,8 @@ builder.Services.AddAutoMapper(ops => ops.AddProfile<MapperProfiles>());
 
 builder.Services.AddHttpClient<IDaLiJeLekarAktivanDtoRequest, DaLiJeLekarAktivanDtoRequest>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7236");
+    client.BaseAddress = new Uri("https://localhost:7236");  
+    //ovde moze i timeout da ide
 });
 
 
