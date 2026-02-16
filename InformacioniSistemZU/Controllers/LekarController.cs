@@ -66,9 +66,14 @@ namespace InformacioniSistemZU.Controllers
 
         [HttpPost]
         [ValidateModel]
-        public IActionResult SacuvajLekara(UnesiLekaraDtoRequest unesiLekara)
+        public async Task<IActionResult> SacuvajLekara(UnesiLekaraDtoRequest unesiLekara)
         {
-            var proveraLekara = _proveraAktivnostiLekara.ProveraAktivnosti(unesiLekara.Jmbg);
+            //metoda ProveraAktivnosti je async a pozivao si je bez async await. To nikako nije moglo da radi.
+            //ispravio sam i potpis metode
+            var proveraLekara = await _proveraAktivnostiLekara.ProveraAktivnosti(unesiLekara.Jmbg);
+
+            //cela ova linija iznad, bi trebalo da bude u okviru _lekarservice.UnesiLekara, ne na nivou kontrolera
+            //takodje sa proveraLekara nista ne radis, mozda nisi implementirao dalje jer nisi uspeo da izvrsis kod
 
             var unetiLekar = _lekarservice.UnesiLekara(unesiLekara);
            
