@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InformacioniSistemZU.BusinessModell.RepositoriesBM;
+using InformacioniSistemZU.BusinessModell.Services;
 using InformacioniSistemZU.CustomActionFilters;
 using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
@@ -15,11 +16,13 @@ namespace InformacioniSistemZU.Controllers
     {
         private readonly ILekarService _lekarservice;
         private readonly ILogger<LekarController> _logger;
+        private readonly IProveraAktivnostiLekaraService _proveraAktivnostiLekara;
 
-        public LekarController(ILekarService lekarService, ILogger<LekarController> logger)
+        public LekarController(ILekarService lekarService, ILogger<LekarController> logger, IProveraAktivnostiLekaraService proveraAktivnostiLekara)
         {
             _lekarservice = lekarService;
             _logger = logger;
+            _proveraAktivnostiLekara = proveraAktivnostiLekara;
         }
 
         [HttpGet]
@@ -65,6 +68,8 @@ namespace InformacioniSistemZU.Controllers
         [ValidateModel]
         public IActionResult SacuvajLekara(UnesiLekaraDtoRequest unesiLekara)
         {
+            var proveraLekara = _proveraAktivnostiLekara.ProveraAktivnosti(unesiLekara.Jmbg);
+
             var unetiLekar = _lekarservice.UnesiLekara(unesiLekara);
            
             return Ok(unetiLekar);

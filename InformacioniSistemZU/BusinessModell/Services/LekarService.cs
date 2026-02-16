@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InformacioniSistemZU.BusinessModell.Services;
 using InformacioniSistemZU.DataModel.Repositories;
 using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
@@ -20,16 +21,16 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
         private readonly IMapper _mapper;
         private readonly ISpecijalnostRepository _specijalnostRepository;
         private readonly IPregledRepository _pregledRepository;
-        private readonly IDaLiJeLekarAktivanDtoRequest _daLiJeLekarAktivan;
+        private readonly IProveraAktivnostiLekaraService _proveraAktivnostiLekara;
 
         public LekarService(ILekarRepository lekarRepository, IMapper mapper, ISpecijalnostRepository specijalnostRepository,
-                            IPregledRepository pregledRepository, IDaLiJeLekarAktivanDtoRequest daLiJeLekarAktivan)
+                            IPregledRepository pregledRepository, IProveraAktivnostiLekaraService proveraAktivnostiLekara)
         {
             _lekarRepository = lekarRepository;
             _mapper = mapper;
             _specijalnostRepository = specijalnostRepository;
             _pregledRepository = pregledRepository;
-            _daLiJeLekarAktivan = daLiJeLekarAktivan;
+            _proveraAktivnostiLekara = proveraAktivnostiLekara;
         }
 
         public LekarDtoResponse IzmeniLekara(int id, IzmeniLekaraDtoRequest lekarRequest)
@@ -63,7 +64,7 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
         {
             BrojGodina(lekarRequest.DatumRodjenja);
 
-            bool isActive = await _daLiJeLekarAktivan.DaLiJeAktivan(lekarRequest.Jmbg, lekarRequest.IsActive == true);
+            bool isActive = await _proveraAktivnostiLekara.ProveraAktivnosti(lekarRequest.Jmbg);
 
             if (!isActive)
             {

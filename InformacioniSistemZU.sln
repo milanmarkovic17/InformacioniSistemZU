@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36429.23 d17.14
+VisualStudioVersion = 17.14.36429.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InformacioniSistemZU", "InformacioniSistemZU\InformacioniSistemZU.csproj", "{D85703FE-D155-4679-9532-D5212E88C860}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EksterniAPI", "EksterniAPI\EksterniAPI.csproj", "{F9AE0666-EA54-4300-AE23-F4415D5A428F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D85703FE-D155-4679-9532-D5212E88C860}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D85703FE-D155-4679-9532-D5212E88C860}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D85703FE-D155-4679-9532-D5212E88C860}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9AE0666-EA54-4300-AE23-F4415D5A428F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9AE0666-EA54-4300-AE23-F4415D5A428F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9AE0666-EA54-4300-AE23-F4415D5A428F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9AE0666-EA54-4300-AE23-F4415D5A428F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

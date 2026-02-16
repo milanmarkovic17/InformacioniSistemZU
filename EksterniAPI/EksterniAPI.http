@@ -1,0 +1,6 @@
+@EksterniAPI_HostAddress = http://localhost:5090
+
+GET {{EksterniAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
