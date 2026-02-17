@@ -1,25 +1,39 @@
 ﻿
+using EksterniAPI.Models;
+
 namespace InformacioniSistemZU.BusinessModell.Services
 {
     public class ProveraAktivnostiLekaraService : IProveraAktivnostiLekaraService
     {
         private readonly HttpClient _httpClient;
+        private readonly ILogger<ProveraAktivnostiLekaraService> _logger;
 
-        public ProveraAktivnostiLekaraService(HttpClient httpClient)
+        public ProveraAktivnostiLekaraService(HttpClient httpClient, ILogger<ProveraAktivnostiLekaraService> logger)
         {
             _httpClient = httpClient;
+            _logger = logger;
         }
         public async Task<bool> ProveraAktivnosti(string jmbg)
         {
-            //ruta je bila pogresna, falio je api/ na pocetku. To je ona definisana na ekternomAPI-ju
-            var response = await _httpClient.GetAsync($"api/Registar/lekar/{jmbg}");
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var sadrzaj = await response.Content.ReadAsStringAsync();
-                return bool.TryParse(sadrzaj, out bool rezultat) && rezultat; //ovo si verovatno uzeo kod sa chatGPT-a, prekonfuzan kod. Napisi drugacije, SAM :)
-                //na kraju malo bolje da ishendlujes celu metodu
+                //ruta je bila pogresna, falio je api/ na pocetku. To je ona definisana na ekternomAPI-ju
+                var response = await _httpClient.GetAsync($"api/Registar/lekar?jmbg={jmbg}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var rezultat = await response.Content.ReadFromJsonAsync<RegistarResponse>();
+                    if(rezultat != null && rezultat.IsActive)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Greska prilikom pristupanja eksternom Api-ju");
+                return false;
+            }
         }
     }
 }

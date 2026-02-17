@@ -32,4 +32,8 @@
     <Folder Include="Logs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EksterniAPI\EksterniAPI.csproj" />
+  </ItemGroup>
+
 </Project>
