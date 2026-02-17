@@ -33,11 +33,14 @@ builder.Services.AddScoped<IPregledService, PregledService>();
 
 builder.Services.AddAutoMapper(ops => ops.AddProfile<MapperProfiles>());
 
+
 builder.Services.AddHttpClient<IProveraAktivnostiLekaraService, ProveraAktivnostiLekaraService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7249/");
     client.Timeout = TimeSpan.FromSeconds(10);
 });
+
+
 
 
 builder.Services.AddControllers();

@@ -16,13 +16,11 @@ namespace InformacioniSistemZU.Controllers
     {
         private readonly ILekarService _lekarservice;
         private readonly ILogger<LekarController> _logger;
-        private readonly IProveraAktivnostiLekaraService _proveraAktivnostiLekara;
 
-        public LekarController(ILekarService lekarService, ILogger<LekarController> logger, IProveraAktivnostiLekaraService proveraAktivnostiLekara)
+        public LekarController(ILekarService lekarService, ILogger<LekarController> logger)
         {
             _lekarservice = lekarService;
             _logger = logger;
-            _proveraAktivnostiLekara = proveraAktivnostiLekara;
         }
 
         [HttpGet]
@@ -68,15 +66,15 @@ namespace InformacioniSistemZU.Controllers
         [ValidateModel]
         public async Task<IActionResult> SacuvajLekara(UnesiLekaraDtoRequest unesiLekara)
         {
-            //metoda ProveraAktivnosti je async a pozivao si je bez async await. To nikako nije moglo da radi.
-            //ispravio sam i potpis metode
-            var proveraLekara = await _proveraAktivnostiLekara.ProveraAktivnosti(unesiLekara.Jmbg);
+            // Ne mogu da nadjem problem, za jmbg radi ali za false ne - pusta mi unos u bazu iako je isActive = false. Sta sam propustio?
 
-            //cela ova linija iznad, bi trebalo da bude u okviru _lekarservice.UnesiLekara, ne na nivou kontrolera
-            //takodje sa proveraLekara nista ne radis, mozda nisi implementirao dalje jer nisi uspeo da izvrsis kod
+            var unetiLekar = await _lekarservice.UnesiLekara(unesiLekara);
 
-            var unetiLekar = _lekarservice.UnesiLekara(unesiLekara);
-           
+            if (unetiLekar == null)
+            {
+                return BadRequest("Lekar nije aktivan u registru");
+            }
+            
             return Ok(unetiLekar);
         }
 

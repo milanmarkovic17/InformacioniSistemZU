@@ -8,13 +8,6 @@ namespace EksterniAPI.Controllers
     [ApiController]
     public class RegistarController : ControllerBase
     {
-        //kontroler sa klasom je ozbiljna greska iz nekoliko razloga
-        //1. dodao si klasu koju nigde nisi iskoristio
-        //2. stavio si u konstruktor klasu direktno a nisi je registrovao u DI kontainer.
-        //Kao da ne razumes kako DI i instanciranje klasa radi (konstruktor), to mi je najveca zamerka
-        //ovaj API zbog toga nikad ne bi mogao da izvrsi ni jednu metodu iz kontrolera jer ne zna da kreira kontroler
-
-        //jos se ucis, zaboravljaju se takve stvari, nije to nista strasno ali razmisli/procitaj malo opet kako to funkcionice
         private bool DaLiJeAktivan(string jmbg)
         { 
             if(string.IsNullOrEmpty(jmbg) || jmbg.Length != 13)
@@ -39,8 +32,8 @@ namespace EksterniAPI.Controllers
             RegistarResponse response = new RegistarResponse()
                 {
                     Jmbg = jmbg,
-                    IsActive = true,
-                };
+                    IsActive = provera      // Stavio sam provera umesto true da bi mi vracalo stvarni rezultat a ne uvek true
+                };                          // Smatram da treba tako ali mozda gresim
 
             return Ok(response);
         }

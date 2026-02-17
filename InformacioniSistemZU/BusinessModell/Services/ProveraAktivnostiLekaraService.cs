@@ -1,5 +1,6 @@
 ﻿
 using EksterniAPI.Models;
+using InformacioniSistemZU.Dtos.Responses;
 
 namespace InformacioniSistemZU.BusinessModell.Services
 {
@@ -17,12 +18,11 @@ namespace InformacioniSistemZU.BusinessModell.Services
         {
             try
             {
-                //ruta je bila pogresna, falio je api/ na pocetku. To je ona definisana na ekternomAPI-ju
                 var response = await _httpClient.GetAsync($"api/Registar/lekar?jmbg={jmbg}");
                 if (response.IsSuccessStatusCode)
                 {
-                    var rezultat = await response.Content.ReadFromJsonAsync<RegistarResponse>();
-                    if(rezultat != null && rezultat.IsActive)
+                    var rezultat = await response.Content.ReadFromJsonAsync<RegistarDtoResponse>();
+                    if(rezultat != null && rezultat.IsActive == true)
                     {
                         return true;
                     }
