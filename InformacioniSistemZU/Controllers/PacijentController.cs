@@ -1,11 +1,7 @@
-﻿using Azure;
-using InformacioniSistemZU.BusinessModell.Services;
+﻿using InformacioniSistemZU.BusinessModell.Services;
 using InformacioniSistemZU.CustomActionFilters;
 using InformacioniSistemZU.Dtos.Requests;
-using InformacioniSistemZU.Dtos.Responses;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace InformacioniSistemZU.Controllers
 {

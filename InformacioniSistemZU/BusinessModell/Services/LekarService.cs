@@ -4,14 +4,7 @@ using InformacioniSistemZU.DataModel.Repositories;
 using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
 using InformacioniSistemZU.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Data;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using static InformacioniSistemZU.Enums.Enums;
 
 namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
 {

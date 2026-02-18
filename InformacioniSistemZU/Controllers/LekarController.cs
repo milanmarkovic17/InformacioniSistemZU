@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-using InformacioniSistemZU.BusinessModell.RepositoriesBM;
-using InformacioniSistemZU.BusinessModell.Services;
+﻿using InformacioniSistemZU.BusinessModell.RepositoriesBM;
 using InformacioniSistemZU.CustomActionFilters;
 using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static InformacioniSistemZU.Enums.Enums;
 
 namespace InformacioniSistemZU.Controllers
 {

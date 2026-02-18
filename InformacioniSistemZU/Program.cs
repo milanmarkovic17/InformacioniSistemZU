@@ -1,7 +1,7 @@
+using InformacioniSistemZU.AppSettingsJson;
 using InformacioniSistemZU.BusinessModell.RepositoriesBM;
 using InformacioniSistemZU.BusinessModell.Services;
 using InformacioniSistemZU.DataModel.Repositories;
-using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.MainDbContext;
 using InformacioniSistemZU.Mapper;
 using InformacioniSistemZU.Middlewares;
@@ -33,14 +33,24 @@ builder.Services.AddScoped<IPregledService, PregledService>();
 
 builder.Services.AddAutoMapper(ops => ops.AddProfile<MapperProfiles>());
 
-
+/*
 builder.Services.AddHttpClient<IProveraAktivnostiLekaraService, ProveraAktivnostiLekaraService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7249/");
     client.Timeout = TimeSpan.FromSeconds(10);
+});*/
+
+var externalSettings = builder.Configuration.GetSection("ExternalServiceSettings");
+builder.Services.Configure<ExternalServiceSettings>(externalSettings);
+
+builder.Services.AddHttpClient<IProveraAktivnostiLekaraService, ProveraAktivnostiLekaraService>((ServiceProvider, client) =>
+{
+    var settings = externalSettings.Get<ExternalServiceSettings>();
+    client.BaseAddress = new Uri(settings.BaseUri);
+    client.Timeout = TimeSpan.FromMilliseconds(settings.Timeout);
 });
 
-
+    
 
 
 builder.Services.AddControllers();
