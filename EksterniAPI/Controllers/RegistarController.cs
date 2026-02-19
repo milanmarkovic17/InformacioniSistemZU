@@ -31,9 +31,9 @@ namespace EksterniAPI.Controllers
             RegistarResponse response = new RegistarResponse()
                 {
                     Jmbg = jmbg,
-                    IsActive = provera      // Stavio sam provera umesto true da bi mi vracalo stvarni rezultat a ne uvek true
-                };                          // Smatram da treba tako ali mozda gresim
-
+                    IsActive = provera      
+                };         
+            
             return Ok(response);
         }
     }

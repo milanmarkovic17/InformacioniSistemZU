@@ -8,11 +8,13 @@ namespace InformacioniSistemZU.BusinessModell.Services
     public class ProveraAktivnostiLekaraService : IProveraAktivnostiLekaraService
     {
         private readonly HttpClient _httpClient;
+        private readonly ILogger<ProveraAktivnostiLekaraService> _logger;
         private readonly ExternalServiceSettings _settings;
 
-        public ProveraAktivnostiLekaraService(HttpClient httpClient, IOptions<ExternalServiceSettings> options)
+        public ProveraAktivnostiLekaraService(HttpClient httpClient, IOptions<ExternalServiceSettings> options, ILogger<ProveraAktivnostiLekaraService> logger)
         {
             _httpClient = httpClient;
+            _logger = logger;
             _settings = options.Value;
         }
         /*
@@ -32,7 +34,7 @@ namespace InformacioniSistemZU.BusinessModell.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var rezultat = await response.Content.ReadFromJsonAsync<RegistarDtoResponse>();
-                    if(rezultat != null && rezultat.IsActive == true)
+                    if(rezultat != null && rezultat.IsActive)
                     {
                         return true;
                     }
@@ -47,18 +49,29 @@ namespace InformacioniSistemZU.BusinessModell.Services
         }*/
         public async Task<bool> ProveraAktivnosti(string jmbg)
         {
-            string path = _settings.AktivanLekarPath.Replace("$jmbg$", jmbg);
-
-            var response = await _httpClient.GetAsync(path);
-            if(response.IsSuccessStatusCode)
+            try
             {
-                var rezultat = await response.Content.ReadFromJsonAsync<RegistarDtoResponse>();
-                if (rezultat != null && rezultat.IsActive == true)
+                _logger.LogInformation($"Pocetak provere aktivnosti lekara sa maticnim brojem: {jmbg}");
+                string path = _settings.AktivanLekarPath.Replace("$jmbg$", jmbg);
+
+                var response = await _httpClient.GetAsync(path);
+                if (response.IsSuccessStatusCode)
                 {
-                    return true;
-                }
+                    var rezultat = await response.Content.ReadFromJsonAsync<RegistarDtoResponse>();
+                    if (rezultat != null && rezultat.IsActive)
+                    {                                                  
+                        _logger.LogInformation($"Lekar sa maticnim brojem: {jmbg} je aktivan u registru");
+                        return true;
+                    }
+                }       
+                _logger.LogInformation($"Lekar sa maticnim brojem: {jmbg} nije aktivan u registru"); // Ovde mi loguje samo ako je jmbg los a ako je isActive = false ne loguje
+                return false;                                                                        // Sto?
             }
-            return false;
+            catch (Exception ex)
+            {
+                _logger.LogError("Doslo je greske prilikom pristupanja eksternom API-ju");
+                return false;
+            }
         }
         
     }

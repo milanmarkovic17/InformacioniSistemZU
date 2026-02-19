@@ -63,6 +63,10 @@ namespace InformacioniSistemZU.Controllers
         public async Task<IActionResult> SacuvajLekara(UnesiLekaraDtoRequest unesiLekara)
         {
             // Ne mogu da nadjem problem, za jmbg radi ali za false ne - pusta mi unos u bazu iako je isActive = false. Sta sam propustio?
+            if (unesiLekara.IsActive == false)
+            {
+                return BadRequest("Lekar mora biti aktivan");   // Da li je ovaj if legitiman? Sa njim mi ne unosi false u bazu.
+            }                                                   // Znam, znam, znam - ovo ne bi trabalo da bude na kontroleru
 
             var unetiLekar = await _lekarservice.UnesiLekara(unesiLekara);
 
