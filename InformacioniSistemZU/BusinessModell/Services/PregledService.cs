@@ -48,11 +48,9 @@ namespace InformacioniSistemZU.BusinessModell.Services
             return pregledResponse;
         }
 
-        /// zanimljiva logika... i lepo si je obradio. Bravo!
-        /// ja bih stavio datumOd i datumDo. Pa za tacan datum bi morali da se poklapaju datumOd i datumDo
+        
         public IEnumerable<PregledDtoResponse> VratiPregledePoDatumu(DateOnly datumOd, DateOnly? datumDo)
         {
-            //mozes ovde validaciju, ovako kako si napisao i jos uslov da doDatuma ima vrednost tj da nije null
             
             if(datumDo.HasValue && datumDo <= datumOd)
             {

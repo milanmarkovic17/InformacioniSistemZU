@@ -50,10 +50,7 @@ namespace InformacioniSistemZU.Controllers
         public IActionResult IzmeniPacijenta(int id, IzmeniPacijentaDtoRequest izmeniPacijenta)
         {
             var izmenjeniPacijentResult = _pacijentService.IzmeniPacijenta(id, izmeniPacijenta);
-            //if (izmenjeniPacijent == null)
-            //{
-            //    return NotFound();
-            //}
+            
             if (izmenjeniPacijentResult.IsSuccess)
             {
                 return Ok(izmenjeniPacijentResult.Value);

@@ -64,8 +64,8 @@ namespace InformacioniSistemZU.BusinessModell.Services
                         return true;
                     }
                 }       
-                _logger.LogInformation($"Lekar sa maticnim brojem: {jmbg} nije aktivan u registru"); // Ovde mi loguje samo ako je jmbg los a ako je isActive = false ne loguje
-                return false;                                                                        // Sto?
+                _logger.LogInformation($"Lekar sa maticnim brojem: {jmbg} nije aktivan u registru"); 
+                return false;                                                                       
             }
             catch (Exception ex)
             {

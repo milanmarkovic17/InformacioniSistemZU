@@ -2,6 +2,7 @@
 using InformacioniSistemZU.CustomActionFilters;
 using InformacioniSistemZU.Dtos.Requests;
 using InformacioniSistemZU.Dtos.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InformacioniSistemZU.Controllers
@@ -44,7 +45,7 @@ namespace InformacioniSistemZU.Controllers
             return Ok(pacijenti);
         }
 
-        //ja bih i bez pretrage u ruti, ali bitno je ovo FromQuery
+        
         [HttpGet("pretraga")]
         public IActionResult VratiLekarePoImenu([FromQuery] LekarPretragaDtoResponse lekarResponse, [FromQuery] int strana = 1, [FromQuery] int velicinaStrane = 10)
         {
@@ -62,12 +63,6 @@ namespace InformacioniSistemZU.Controllers
         [ValidateModel]
         public async Task<IActionResult> SacuvajLekara(UnesiLekaraDtoRequest unesiLekara)
         {
-            // Ne mogu da nadjem problem, za jmbg radi ali za false ne - pusta mi unos u bazu iako je isActive = false. Sta sam propustio?
-            if (unesiLekara.IsActive == false)
-            {
-                return BadRequest("Lekar mora biti aktivan");   // Da li je ovaj if legitiman? Sa njim mi ne unosi false u bazu.
-            }                                                   // Znam, znam, znam - ovo ne bi trabalo da bude na kontroleru
-
             var unetiLekar = await _lekarservice.UnesiLekara(unesiLekara);
 
             if (unetiLekar == null)

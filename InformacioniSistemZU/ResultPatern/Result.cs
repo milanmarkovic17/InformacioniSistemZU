@@ -18,7 +18,6 @@
 
         public class Result<T> : Result
         {
-           // public string? Message { get; }
             public T? Value { get; }
         
             protected Result(T? value, List<string>? errors, bool isSuccess) : base(errors, isSuccess)

@@ -6,7 +6,9 @@ using InformacioniSistemZU.MainDbContext;
 using InformacioniSistemZU.Mapper;
 using InformacioniSistemZU.Middlewares;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,7 @@ builder.Services.AddScoped<IPregledRepository, PregledRepository>();
 builder.Services.AddScoped<IPregledService, PregledService>();
 
 builder.Services.AddAutoMapper(ops => ops.AddProfile<MapperProfiles>());
+
 
 /*
 builder.Services.AddHttpClient<IProveraAktivnostiLekaraService, ProveraAktivnostiLekaraService>(client =>

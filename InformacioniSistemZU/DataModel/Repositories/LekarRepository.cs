@@ -14,7 +14,7 @@ namespace InformacioniSistemZU.DataModel.Repositories
         }
         public Lekar IzbrisiLekara(int id)
         {
-            if (id <= 0) //ovo se zove defanzivno programiranje. Ako neko prosledi parametre koji nemaju veze sa vezom, u startu ga izbacis iz metode. Nije obavezno svakako ali je pozeljno na nekom nivou
+            if (id <= 0) 
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -31,7 +31,7 @@ namespace InformacioniSistemZU.DataModel.Repositories
 
         public Lekar IzmeniLekara(int id, Lekar lekar)
         {
-            ArgumentNullException.ThrowIfNull(lekar); //defanzivno programiranje
+            ArgumentNullException.ThrowIfNull(lekar); 
 
             var dataLekar = _dbContext.Lekari.FirstOrDefault(x => x.Id == id);
             if (dataLekar == null)
@@ -62,7 +62,7 @@ namespace InformacioniSistemZU.DataModel.Repositories
 
         public Lekar UnesiLekara(Lekar lekar)
         {
-            ArgumentNullException.ThrowIfNull(lekar); //defanzivno programiranje
+            ArgumentNullException.ThrowIfNull(lekar); 
 
             _dbContext.Lekari.Add(lekar);
             _dbContext.SaveChanges();

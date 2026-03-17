@@ -51,8 +51,7 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
             return lekarResponse;
         }
 
-        //Kod unosa lekara proveriti da li lekar sa tim jmbg-om postoji u registru suspendovanih lekara
-        //registar suspendovanih lekara ce ti biti endpoint na novom API-ju
+        
         public async Task<LekarDtoResponse> UnesiLekara(UnesiLekaraDtoRequest lekarRequest)
         {
             BrojGodina(lekarRequest.DatumRodjenja);
@@ -142,15 +141,6 @@ namespace InformacioniSistemZU.BusinessModell.RepositoriesBM
             {
                 throw new ArgumentOutOfRangeException("Ne mozete uneti ili izmeniti lekara ukoliko ima vise od 70 godina.");
             }
-
-            /*
-            var godinaRodjenja = datumRodjenja.Year;
-            var danas = DateTime.Now.Year;
-            var brojGodina = danas - godinaRodjenja;
-            if (brojGodina > 70)
-            {
-                throw new ArgumentOutOfRangeException("Ne mozete uneti ili izmeniti lekara ukoliko ima vise od 70 godina.");
-            }*/
         }
     }
 }
